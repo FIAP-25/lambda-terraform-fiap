@@ -34,7 +34,7 @@ jobs:
           cd autenticarUsuario/autenticar-usuario
           npm install
 
-      - name: Build js files
+      - name: Build .js files
         run: |
           cd ..
           sam build
