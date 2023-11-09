@@ -22,6 +22,9 @@ jobs:
           node-version: "18.x"
           cache: "npm"
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -29,21 +32,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: us-east-1
 
-      - name: Install dependencies
-        working-directory: ./autenticarUsuario/autenticar-usuario
-        run: npm install
-
-      - name: show folders
-        run: pwd
-
-      - name: Build .js files
-        working-directory: ./autenticarUsuario
-        run: sam build
-
       - name: Ziping files
-        working-directory: ./autenticarUsuario/.aws-sam/build/AutenticarUsuarioFunction
-        run: zip -r lambda.zip ./*
+        run: zip -r lambda.zip node_modules index.js
 
       - name: Deploying lambda
-        working-directory: ./autenticarUsuario/.aws-sam/build/AutenticarUsuarioFunction
         run: aws lambda update-function-code --function-name=$FUNCTION_NAME --zip-file=fileb://lambda.zip
