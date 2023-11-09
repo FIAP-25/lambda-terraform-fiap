@@ -33,7 +33,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Ziping files
-        run: zip -r lambda.zip node_modules index.js
+        run: zip -r lambda.zip node_modules app.js
 
       - name: Deploying lambda
         run: aws lambda update-function-code --function-name=$FUNCTION_NAME --zip-file=fileb://lambda.zip
