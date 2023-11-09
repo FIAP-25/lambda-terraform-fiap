@@ -17,7 +17,7 @@ function gerarTokenJWT(cpf, jwtSecret) {
   return token;
 }
 
-export const lambdaHandler = async (event) => {
+exports.lambdaHandler = async (event, context) => {
   console.log("log teste 2");
   const cpf = event.cpf;
 
