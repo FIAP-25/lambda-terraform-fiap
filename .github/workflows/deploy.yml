@@ -22,12 +22,6 @@ jobs:
           node-version: "18.x"
           cache: "npm"
 
-      - name: Change directory
-        run: cd autenticarUsuario/autenticar-usuario
-
-      - name: show folders
-        run: pwd
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -36,20 +30,19 @@ jobs:
           aws-region: us-east-1
 
       - name: Install dependencies
+        working-directory: ./autenticarUsuario/autenticar-usuario
         run: npm install
 
       - name: show folders
         run: pwd
 
       - name: Build .js files
-        run: |
-          cd ..
-          sam build
+        working-directory: ./autenticarUsuario
+        run: sam build
 
       - name: Ziping files
-        run: |
-          cd .aws-sam/build/AutenticarUsuarioFunction
-          zip -r lambda.zip ./*
+        working-directory: ./autenticarUsuario/.aws-sam/build/AutenticarUsuarioFunction
+        run: zip -r lambda.zip ./*
 
       - name: Deploying lambda
         run: aws lambda update-function-code --function-name=$FUNCTION_NAME --zip-file=fileb://lambda.zip
