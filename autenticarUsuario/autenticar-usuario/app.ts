@@ -20,60 +20,60 @@ function gerarTokenJWT(cpf: string, jwtSecret: string) {
 }
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent & { cpf: string }): Promise<APIGatewayProxyResult> => {
-    console.log('log teste 2')
-    const cpf = event.cpf;
+    console.log('log teste 2');
+    // const cpf = event.cpf;
 
-    if (!cpf) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ mensagem: 'Campo [cpf:string] não informado.' })
-        };
-    }
+    // if (!cpf) {
+    //     return {
+    //         statusCode: 400,
+    //         body: JSON.stringify({ mensagem: 'Campo [cpf:string] não informado.' })
+    //     };
+    // }
 
-    try {
-        //Obtém o arquivo .env do S3
-        const s3Object = await s3.getObject({ Bucket: s3BucketName, Key: envFileName }).promise();
-        var envConfig = '';
+    // try {
+    //     //Obtém o arquivo .env do S3
+    //     const s3Object = await s3.getObject({ Bucket: s3BucketName, Key: envFileName }).promise();
+    //     var envConfig = '';
 
-        if (s3Object && s3Object.Body) {
-            envConfig = s3Object.Body.toString();
-        }
-        const parsedEnv = dotenv.parse(envConfig);
+    //     if (s3Object && s3Object.Body) {
+    //         envConfig = s3Object.Body.toString();
+    //     }
+    //     const parsedEnv = dotenv.parse(envConfig);
 
-        const connection = await mysql.createConnection({
-            host: parsedEnv.DATABASE_HOST,
-            user: parsedEnv.DATABASE_USERNAME,
-            password: parsedEnv.DATABASE_PASSWORD,
-            database: parsedEnv.DATABASE_SCHEMA,
-            port: Number(parsedEnv.DATABASE_PORT)
-        });
+    //     const connection = await mysql.createConnection({
+    //         host: parsedEnv.DATABASE_HOST,
+    //         user: parsedEnv.DATABASE_USERNAME,
+    //         password: parsedEnv.DATABASE_PASSWORD,
+    //         database: parsedEnv.DATABASE_SCHEMA,
+    //         port: Number(parsedEnv.DATABASE_PORT)
+    //     });
 
-        const [rows] = await connection.execute('SELECT * FROM cliente WHERE cpf = ?', [cpf]);
+    //     const [rows] = await connection.execute('SELECT * FROM cliente WHERE cpf = ?', [cpf]);
 
-        connection.end();
-        if (Array.isArray(rows) && rows.length === 1) {
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ mensagem: 'Autenticação feita com sucesso!', token: gerarTokenJWT(cpf, parsedEnv.JWT_SECRET) })
-            };
-        } else {
-            return {
-                statusCode: 401,
-                body: JSON.stringify({ mensagem: 'Credenciais inválidas.' })
-            };
-        }
-    } catch (err) {
-        var mensagemDetalhe = '';
-        if (err instanceof Error) {
-            mensagemDetalhe = err.message;
-        }
+    //     connection.end();
+    //     if (Array.isArray(rows) && rows.length === 1) {
+    //         return {
+    //             statusCode: 200,
+    //             body: JSON.stringify({ mensagem: 'Autenticação feita com sucesso!', token: gerarTokenJWT(cpf, parsedEnv.JWT_SECRET) })
+    //         };
+    //     } else {
+    //         return {
+    //             statusCode: 401,
+    //             body: JSON.stringify({ mensagem: 'Credenciais inválidas.' })
+    //         };
+    //     }
+    // } catch (err) {
+    //     var mensagemDetalhe = '';
+    //     if (err instanceof Error) {
+    //         mensagemDetalhe = err.message;
+    //     }
 
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                mensagem: 'Ocorreu um erro, tente novamente mais tarde',
-                mensagemDetalhe: mensagemDetalhe
-            })
-        };
-    }
+    //     return {
+    //         statusCode: 500,
+    //         body: JSON.stringify({
+    //             mensagem: 'Ocorreu um erro, tente novamente mais tarde',
+    //             mensagemDetalhe: mensagemDetalhe
+    //         })
+    //     };
+    // }
 };
