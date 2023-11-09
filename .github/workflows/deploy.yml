@@ -38,6 +38,7 @@ jobs:
       - name: Build .js files
         run: |
           cd ..
+          pwd
           sam build
 
       - name: Ziping files
