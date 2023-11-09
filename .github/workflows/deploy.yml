@@ -35,8 +35,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: show folders
+        run: pwd
+
       - name: Build .js files
-        run: sam build
+        run: |
+          cd ..
+          sam build
 
       - name: Ziping files
         run: |
