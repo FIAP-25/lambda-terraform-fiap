@@ -45,4 +45,5 @@ jobs:
         run: zip -r lambda.zip ./*
 
       - name: Deploying lambda
+        working-directory: ./autenticarUsuario/.aws-sam/build/AutenticarUsuarioFunction
         run: aws lambda update-function-code --function-name=$FUNCTION_NAME --zip-file=fileb://lambda.zip
