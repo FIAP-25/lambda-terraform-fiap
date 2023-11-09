@@ -25,6 +25,9 @@ jobs:
       - name: Change directory
         run: cd autenticarUsuario/autenticar-usuario
 
+      - name: show folders
+        run: pwd
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
