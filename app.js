@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
 const s3 = new AWS.S3();
-const s3BucketName = "fiap-arquivos";
+const s3BucketName = "fiap-files";
 const envFileName = ".env";
 
 function gerarTokenJWT(cpf, jwtSecret) {
